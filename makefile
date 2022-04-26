@@ -8,4 +8,5 @@ install:
 remove:
 	npm remove -g galaxiat.serve.seo
 refresh: remove install
-publish: npm publish
+publish: 
+	npm publish

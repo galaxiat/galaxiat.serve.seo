@@ -15,6 +15,7 @@ type crawl_urls_cron = {
   cron: string
 }
 type config_type = {
+  args : string[]
   hostname: string,
   port: number,
   target: string,
@@ -34,7 +35,7 @@ if (config["crawl"] != undefined) {
     const runner = async () => {
       try {
         console.log(`CAPTURE : ${entry.url} -> ${entry.file}`)
-        const browser = await puppeteer.launch({ headless: true });
+        const browser = await puppeteer.launch({ headless: true, args: config.args });
         const page = await browser.newPage();
         await page.setJavaScriptEnabled(true)
         await page.setDefaultTimeout(5000);

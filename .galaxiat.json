@@ -1,0 +1,13 @@
+{
+  "hostname" : "galaxiatapp.com",
+  "port" : 3000,
+  "target" : "http://localhost:3000",
+  "public" : "./public",
+  "crawl" : [
+    {
+      "url" : "/path",
+      "file" : "/cache/path.html",
+      "cron" : "*/10 * * * * *"
+    }
+  ]
+}

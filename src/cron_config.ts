@@ -1,6 +1,6 @@
 import { config_type, crawl_urls_cron_config } from "./types";
 import puppeteer from "puppeteer"
-import cron from "node-cron"
+import Cron from "croner"
 import { writeFileSync, mkdirSync } from 'fs';
 
 
@@ -46,15 +46,14 @@ export function NewCronConfig(browser: puppeteer.Browser, config: config_type, e
       await page.close()
     } catch (e) {
       if (!page.isClosed()) {
-        page.close()
+        await page.close()
       }
       console.log(e)
     }
   }
-  let crn = cron.schedule(entry.cron, async () => {
+  let crn = new Cron(entry.cron, async () => {
     await runner()
-  })
-  crn.start();
+  });
 
   (async () => {
     await runner()

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@types/node-cron": "^3.0.1",
+    "croner": "^4.3.9",
     "micro": "^9.3.4",
     "node-cron": "^3.0.0",
     "node-fetch": "^2.6.6",
@@ -12,7 +13,11 @@
     "galaxiat.serve.seo": "./dist/index.js"
   },
   "keywords": [
-    "seo", "crawl", "prerender", "puppeteer", "serve"
+    "seo",
+    "crawl",
+    "prerender",
+    "puppeteer",
+    "serve"
   ],
   "name": "galaxiat.serve.seo",
   "description": "galaxiat.serve.seo Node.js package allows you to easily cron crawl path that you want to have an html version (for dynamic rendering like React) without have to make SSR when request is passed.",

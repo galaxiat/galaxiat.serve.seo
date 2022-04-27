@@ -47,7 +47,7 @@ export function NewCronRemote(browser: puppeteer.Browser, config: config_type, e
                 await page.close()
               } catch (e){
                 if (!page.isClosed()) {
-                  page.close()
+                  await page.close()
                 }
                 console.log(e)
               }

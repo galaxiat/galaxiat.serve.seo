@@ -7,8 +7,14 @@
   "public" : "./public",
   "crawl" : [
     {
+      "type" : "config",
       "url" : "/path",
       "file" : "/cache/path.html",
+      "cron" : "*/10 * * * * *"
+    },
+    {
+      "type" : "remote",
+      "json_url" : "https://galaxiatapp.com/seo/galaxiat.json",
       "cron" : "*/10 * * * * *"
     }
   ]

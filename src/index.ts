@@ -26,7 +26,7 @@ const config: config_type = JSON.parse(readFileSync(config_location).toString())
     });
   })
 
-  const browser = await puppeteer.launch({ headless: false, args: config.args });
+  const browser = await puppeteer.launch({ headless: true, args: config.args });
   const borwserPID = browser.process();
   let queue = new Stack()
 

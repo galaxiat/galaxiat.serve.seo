@@ -31,7 +31,7 @@ const config: config_type = JSON.parse(readFileSync(config_location).toString())
         console.log("ERROR : entry type not found")
       }
     }
-    await browser.close()
+    //await browser.close()
 
   } else {
     console.log("No crawl params found")

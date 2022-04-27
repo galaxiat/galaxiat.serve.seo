@@ -24,3 +24,8 @@ export type config_type = {
   public: string,
   crawl: crawl_urls_cron[]
 }
+
+export type crawl = {
+  url : string,
+  file : string
+}

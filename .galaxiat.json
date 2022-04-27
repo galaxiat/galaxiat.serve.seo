@@ -10,12 +10,12 @@
       "type" : "config",
       "url" : "/path",
       "file" : "/cache/path.html",
-      "cron" : "*/10 * * * * *"
+      "cron" : "0 * * * * *"
     },
     {
       "type" : "remote",
       "json_url" : "https://api.galaxiatapp.com/seo/galaxiat.json",
-      "cron" : "0 */5 * * * *"
+      "cron" : "0 */15 * * * *"
     }
   ]
 }

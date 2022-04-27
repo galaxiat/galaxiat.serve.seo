@@ -16,11 +16,12 @@ export function NewCronRemote(browser: puppeteer.Browser, config: config_type, e
   console.log(`ADDED : ${entry.json_url} -> REMOTE`)
 
   const runner = async () => {
-    const page = await browser.newPage();
+   
     try {
       console.log(`CAPTURE : ${entry.json_url} -> REMOTE`)
       let json: crawl_urls_cron_remote_json = await fetch(entry.json_url).then(res => res.json())
       for (const entry of json) {
+        const page = await browser.newPage();
         await page.setJavaScriptEnabled(true)
         page.setDefaultTimeout(5000);
         page.setDefaultNavigationTimeout(10000);

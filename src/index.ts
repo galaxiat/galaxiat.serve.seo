@@ -4,77 +4,42 @@
 
 import handler from 'serve-handler';
 import http from 'http';
-import { readFileSync, writeFileSync, mkdirSync } from 'fs';
-import cron from "node-cron"
+import { readFileSync } from 'fs';
+import { config_type, crawl_urls_cron } from './types';
 import puppeteer from "puppeteer"
-// types 
-
-type crawl_urls_cron = {
-  url: string,
-  file: string,
-  cron: string
-}
-type config_type = {
-  args : string[]
-  hostname: string,
-  port: number,
-  target: string,
-  public: string,
-  crawl: crawl_urls_cron[]
-}
-
-// runs
+import { NewCronConfig } from './cron_config';
+import { NewCronRemote } from './cron_remote';
 
 
 
-//console.log("Reading config")
-const config: config_type = JSON.parse(readFileSync("./.galaxiat.json").toString())
-if (config["crawl"] != undefined) {
-  for (const entry of (config["crawl"] as crawl_urls_cron[])) {
-    console.log(`ADDED : ${entry.url} -> ${entry.file} | ${entry.cron}`)
-    const runner = async () => {
-      try {
-        console.log(`CAPTURE : ${entry.url} -> ${entry.file}`)
-        const browser = await puppeteer.launch({ headless: true, args: config.args });
-        const page = await browser.newPage();
-        await page.setJavaScriptEnabled(true)
-        await page.setDefaultTimeout(5000);
-        //change the defualt naviagation wait time
-        
-        await page.setDefaultNavigationTimeout(10000);
-        let url = (entry.url.includes("http")) ? entry.url : `${config.target}${entry.url}`
-        console.log(url)
-        await page.goto(url, {
-          waitUntil: ["domcontentloaded", "load", "networkidle2", "networkidle0"],
-        });
-        await page.waitForNetworkIdle()
-        await page.waitForTimeout(15000)
-        let ctn = await page.content()
-        console.log(`END CAPTURE : ${entry.url} -> ${entry.file}`)
-        const path = `${config.public}${entry.file.split("/").slice(0, -1).join("/")}`
-        mkdirSync(path, {
-          recursive: true
-        })
-        writeFileSync(`${config.public}/${entry.file}`, ctn)
-        await browser.close();
-      } catch (e) {
-        console.log(e)
+
+const galaxiat_env = process.env.GALAXIAT_SERVE_ENV
+const config_location = galaxiat_env ? `./.galaxiat.${galaxiat_env}.json` : `./.galaxiat.json`
+
+console.log(`loading config ${config_location}`);
+
+const config: config_type = JSON.parse(readFileSync(config_location).toString());
+(async () => {
+  if (config["crawl"] != undefined) {
+    const browser = await puppeteer.launch({ headless: true, args: config.args });
+    for (const entry of (config["crawl"] as crawl_urls_cron[])) {
+      if (entry.type == "config") {
+        NewCronConfig(browser, config, entry)
+      } else if (entry.type == "remote") {
+        NewCronRemote(browser, config, entry)
+      } else {
+        console.log("ERROR : entry type not found")
       }
     }
-    let crn = cron.schedule(entry.cron, async () => {
-      await runner()
-    })
-    crn.start();
+    await browser.close()
 
-    (async () => {
-      await runner()
-    })()
+  } else {
+    console.log("No crawl params found")
   }
 
-}
+})();
+
 const server = http.createServer((request, response) => {
-  // You pass two more arguments for config and middleware
-  // More details here: https://github.com/vercel/serve-handler#options
   return handler(request, response, {
     public: config.public
   });
@@ -84,14 +49,3 @@ const server = http.createServer((request, response) => {
 server.listen(config.port, () => {
   console.log(`Running at http://localhost:${config.port}`);
 });
-
-/**
- (async () => {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.goto('https://example.com');
-  await page.screenshot({ path: 'example.png' });
-
-  await browser.close();
-})();
- */

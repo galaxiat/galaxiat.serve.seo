@@ -40,6 +40,7 @@ if (config["crawl"] != undefined) {
         await page.setJavaScriptEnabled(true)
         await page.setDefaultTimeout(5000);
         //change the defualt naviagation wait time
+        
         await page.setDefaultNavigationTimeout(10000);
         let url = (entry.url.includes("http")) ? entry.url : `${config.target}${entry.url}`
         console.log(url)
@@ -81,7 +82,7 @@ const server = http.createServer((request, response) => {
 
 
 server.listen(config.port, () => {
-  console.log('Running at http://localhost:3000');
+  console.log(`Running at http://localhost:${config.port}`);
 });
 
 /**

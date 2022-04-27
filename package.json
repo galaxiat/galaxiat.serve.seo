@@ -11,8 +11,11 @@
   "bin": {
     "galaxiat.serve.seo": "./dist/index.js"
   },
+  "keywords": [
+    "seo", "crawl", "prerender", "puppeteer", "serve"
+  ],
   "name": "galaxiat.serve.seo",
-  "description": "Node.JS package to serve React app and prerender path (cron)",
+  "description": "galaxiat.serve.seo Node.js package allows you to easily cron crawl path that you want to have an html version (for dynamic rendering like React) without have to make SSR when request is passed.",
   "version": "1.0.0",
   "main": "./dist/index.js",
   "devDependencies": {

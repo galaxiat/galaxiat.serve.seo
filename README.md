@@ -81,6 +81,18 @@ To set env use the `GALAXIAT_SERVE_ENV` var
 ]
 ```
 
+## RoadMap
+
+- `V1.X.X` - Single workload implementation
+  - Per node deployment -> not so good for performance
+  - Crawling is done on the local node
+- `V2.X.X` - Multiple workload implementation
+  - Multi-node deployment -> better performance 
+  - Crawling is done on remote node
+- `V3.X.X` - Advanced Multiple workload implementation
+  - Multi-node deployment + Cluster cache -> better performance 
+  - Cache is cluster wide instead of a local cache per node
+
 ## Links
 
 - [Galaxiat](https://galaxiatapp.com/)

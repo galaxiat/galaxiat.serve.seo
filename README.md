@@ -38,26 +38,32 @@ npm install galaxiat.serve.seo
 ---
 `.galaxiat.json` OR `.galaxiat.{env}.json`
 
+To set env use the `GALAXIAT_SERVE_ENV` var
+
 ```json
 {
-  "hostname": "galaxiatapp.com",
-  "port": 3000,
-  "args": ["--no-sandbox", "--disable-setuid-sandbox"],
-  "target": "https://galaxiatapp.com",
-  "public": "./public",
-  "crawl": [
+  "hostname" : "galaxiatapp.com",
+  "port" : 3000,
+  "args" : ["--no-sandbox", 
+    "--disable-setuid-sandbox"],
+  "target" : "http://localhost:3000",
+  "public" : "./public",
+  "crawl" : [
     {
-      "type": "config",
-      "url": "/path",
-      "file": "/cache/path.html",
-      "cron": "*/10 * * * * *"
+      "type" : "config",
+      "url" : "/path",
+      "file" : "/cache/path.html",
+      "cron" : "0 * * * * *"
     },
     {
-      "type": "remote",
-      "json_url": "https://api.galaxiatapp.com/seo/galaxiat.json",
-      "cron": "0 */5 * * * *"
+      "type" : "remote",
+      "json_url" : "https://api.galaxiatapp.com/seo/galaxiat.json",
+      "cron" : "0 */15 * * * *"
     }
-  ]
+  ],
+  "crawl_cron" : "* * * * * *",
+  "crawl_max_num" : 3,
+  "crawl_queue_num" : 10
 }
 ```
 ---

@@ -10,6 +10,9 @@
     "serve-handler": "^6.1.3",
     "typescript": "^4.6.3"
   },
+  "files": [
+    "/dist"
+  ],
   "bin": {
     "galaxiat.serve.seo": "./dist/index.js"
   },

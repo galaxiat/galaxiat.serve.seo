@@ -22,7 +22,10 @@ export type config_type = {
   port: number,
   target: string,
   public: string,
-  crawl: crawl_urls_cron[]
+  crawl: crawl_urls_cron[],
+  crawl_cron : string
+  crawl_queue_num : number
+  crawl_max_num : number
 }
 
 export type crawl = {

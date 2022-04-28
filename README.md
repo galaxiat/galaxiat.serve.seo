@@ -38,26 +38,32 @@ npm install galaxiat.serve.seo
 ---
 `.galaxiat.json` OR `.galaxiat.{env}.json`
 
+To set env use the `GALAXIAT_SERVE_ENV` var
+
 ```json
 {
-  "hostname": "galaxiatapp.com",
-  "port": 3000,
-  "args": ["--no-sandbox", "--disable-setuid-sandbox"],
-  "target": "https://galaxiatapp.com",
-  "public": "./public",
-  "crawl": [
+  "hostname" : "galaxiatapp.com",
+  "port" : 3000,
+  "args" : ["--no-sandbox", 
+    "--disable-setuid-sandbox"],
+  "target" : "http://localhost:3000",
+  "public" : "./public",
+  "crawl" : [
     {
-      "type": "config",
-      "url": "/path",
-      "file": "/cache/path.html",
-      "cron": "*/10 * * * * *"
+      "type" : "config",
+      "url" : "/path",
+      "file" : "/cache/path.html",
+      "cron" : "0 * * * * *"
     },
     {
-      "type": "remote",
-      "json_url": "https://api.galaxiatapp.com/seo/galaxiat.json",
-      "cron": "0 */5 * * * *"
+      "type" : "remote",
+      "json_url" : "https://api.galaxiatapp.com/seo/galaxiat.json",
+      "cron" : "0 */15 * * * *"
     }
-  ]
+  ],
+  "crawl_cron" : "* * * * * *",
+  "crawl_max_num" : 3,
+  "crawl_queue_num" : 10
 }
 ```
 ---
@@ -74,6 +80,18 @@ npm install galaxiat.serve.seo
   }
 ]
 ```
+
+## RoadMap
+
+- `V1.X.X` - Single workload implementation
+  - Per node deployment -> not so good for performance
+  - Crawling is done on the local node
+- `V2.X.X` - Multiple workload implementation
+  - Multi-node deployment -> better performance 
+  - Crawling is done on remote node
+- `V3.X.X` - Advanced Multiple workload implementation
+  - Multi-node deployment + Cluster cache -> better performance 
+  - Cache is cluster wide instead of a local cache per node
 
 ## Links
 

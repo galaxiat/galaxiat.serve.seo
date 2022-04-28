@@ -24,7 +24,8 @@ export async function Crawl(browser: Browser, crawl_infos: crawl, config: config
     })
     writeFileSync(`${config.public}/${crawl_infos.file}`, ctn)
   } catch (e) {
-    console.log(e)
+
+    console.log(`${crawl_infos.url} -> ${e}`)
   }
   if (!page.isClosed()) {
     await page.close()

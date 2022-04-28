@@ -26,21 +26,25 @@ const config: config_type = JSON.parse(readFileSync(config_location).toString())
     });
   })
 
-  const browser = await puppeteer.launch({ headless: true, args: config.args });
+  const browser = await puppeteer.launch({ headless: false, args: config.args });
   const borwserPID = browser.process();
   let queue = new Stack()
 
   let httpserv = server.listen(config.port, () => {
     if (config["crawl"] != undefined) {
-
-      new Cron("*/15 * * * * *", async () => {
-        console.log(queue.count())
-        for (const entry of queue.get(10)) {
-          
+      let curr_crawl_num = 0
+      new Cron(config.crawl_cron, async () => {
+        console.log("targets :", browser.targets().length)
+        console.log("crawl_num :", curr_crawl_num)
+        console.log("queue count : ",queue.count())
+        if ((curr_crawl_num < config.crawl_max_num)) {
+          curr_crawl_num++
+          for (const entry of queue.get(config.crawl_queue_num)) {
             await Crawl(browser, entry, config)
-          
+          }
+          curr_crawl_num--
         }
-        console.log(browser.targets().length)
+
       })
       for (const entry of (config["crawl"] as crawl_urls_cron[])) {
         if (entry.type == "config") {
@@ -80,7 +84,7 @@ export class Stack {
     return this.list.indexOf(item) === -1 ? this.list.push(item) : this.list.length
   }
   public get(num: number): crawl[] {
-    let array : crawl[] = []
+    let array: crawl[] = []
     for (let i = 0; i < num; i++) {
       let item = this.list.shift()
       if (item) {

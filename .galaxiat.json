@@ -17,5 +17,8 @@
       "json_url" : "https://api.galaxiatapp.com/seo/galaxiat.json",
       "cron" : "0 */15 * * * *"
     }
-  ]
+  ],
+  "crawl_cron" : "* * * * * *",
+  "crawl_max_num" : 3,
+  "crawl_queue_num" : 10
 }

@@ -27,7 +27,7 @@ const config: config_type = JSON.parse(readFileSync(config_location).toString())
   })
 
   const browser = await playwright.chromium.launch({ headless: true, args: config.args });
-  const context = await browser.newContext({ignoreHTTPSErrors : config.errors.https})
+  const context = await browser.newContext({ignoreHTTPSErrors : !config.errors.https})
   let queue = new Stack()
 
   let httpserv = server.listen(config.port, () => {

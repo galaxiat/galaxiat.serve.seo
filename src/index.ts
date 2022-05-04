@@ -6,7 +6,7 @@ import handler from 'serve-handler';
 import http from 'http';
 import { readFileSync } from 'fs';
 import { config_type, crawl, crawl_urls_cron } from './types';
-import puppeteer from "puppeteer"
+import playwright from "playwright"
 import { NewCronConfig } from './cron_config';
 import { NewCronRemote } from './cron_remote';
 import Cron from 'croner';
@@ -26,8 +26,7 @@ const config: config_type = JSON.parse(readFileSync(config_location).toString())
     });
   })
 
-  const browser = await puppeteer.launch({ headless: true, args: config.args });
-  const borwserPID = browser.process();
+  const browser = await playwright.chromium.launch({ headless: true, args: config.args });
   let queue = new Stack()
 
   let httpserv = server.listen(config.port, () => {

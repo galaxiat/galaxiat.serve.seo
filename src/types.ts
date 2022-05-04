@@ -26,6 +26,9 @@ export type config_type = {
   crawl_cron : string
   crawl_queue_num : number
   crawl_max_num : number
+  errors : {
+    https : boolean
+  }
 }
 
 export type crawl = {

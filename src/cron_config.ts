@@ -1,5 +1,4 @@
 import { config_type, crawl_urls_cron_config } from "./types";
-import puppeteer from "puppeteer"
 import Cron from "croner"
 import { writeFileSync, mkdirSync } from 'fs';
 import { Stack } from ".";

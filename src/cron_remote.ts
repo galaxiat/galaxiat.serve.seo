@@ -1,5 +1,4 @@
 import { config_type, crawl_urls_cron_config, crawl_urls_cron_remote, crawl_urls_cron_remote_json } from "./types";
-import puppeteer from "puppeteer"
 import Cron from "croner"
 import { writeFileSync, mkdirSync } from 'fs';
 import fetch from "node-fetch";

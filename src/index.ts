@@ -6,7 +6,7 @@ import handler from 'serve-handler';
 import http from 'http';
 import { readFileSync } from 'fs';
 import { config_type, crawl, crawl_urls_cron } from './types';
-import puppeteer from "puppeteer"
+import playwright from "playwright"
 import { NewCronConfig } from './cron_config';
 import { NewCronRemote } from './cron_remote';
 import Cron from 'croner';
@@ -26,21 +26,21 @@ const config: config_type = JSON.parse(readFileSync(config_location).toString())
     });
   })
 
-  const browser = await puppeteer.launch({ headless: true, args: config.args });
-  const borwserPID = browser.process();
+  const browser = await playwright.chromium.launch({ headless: true, args: config.args });
+  const context = await browser.newContext({ignoreHTTPSErrors : config.errors.https})
   let queue = new Stack()
 
   let httpserv = server.listen(config.port, () => {
     if (config["crawl"] != undefined) {
       let curr_crawl_num = 0
       new Cron(config.crawl_cron, async () => {
-        console.log("targets :", browser.targets().length)
+        //console.log("targets :", browser.targets().length)
         console.log("crawl_num :", curr_crawl_num)
         console.log("queue count : ",queue.count())
         if ((curr_crawl_num < config.crawl_max_num)) {
           curr_crawl_num++
           for (const entry of queue.get(config.crawl_queue_num)) {
-            await Crawl(browser, entry, config)
+            await Crawl(context, entry, config)
           }
           curr_crawl_num--
         }
@@ -62,15 +62,8 @@ const config: config_type = JSON.parse(readFileSync(config_location).toString())
 
     console.log(`Running at http://localhost:${config.port}`);
   });
-
-  httpserv.on("close", () => {
-    browser.on('disconnected', () => {
-      console.log('sleeping 100ms'); //  sleep to eliminate race condition  
-      setTimeout(function () {
-        console.log(`Browser Disconnected... Process Id: ${process}`);
-        borwserPID?.kill()
-      }, 100);
-    })
+  httpserv.on("close", async () => {
+    await browser.close()
   })
 })();
 

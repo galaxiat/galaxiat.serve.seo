@@ -33,7 +33,7 @@ const config: config_type = JSON.parse(readFileSync(config_location).toString())
     if (config["crawl"] != undefined) {
       let curr_crawl_num = 0
       new Cron(config.crawl_cron, async () => {
-        console.log("targets :", browser.targets().length)
+        //console.log("targets :", browser.targets().length)
         console.log("crawl_num :", curr_crawl_num)
         console.log("queue count : ",queue.count())
         if ((curr_crawl_num < config.crawl_max_num)) {
@@ -61,15 +61,8 @@ const config: config_type = JSON.parse(readFileSync(config_location).toString())
 
     console.log(`Running at http://localhost:${config.port}`);
   });
-
-  httpserv.on("close", () => {
-    browser.on('disconnected', () => {
-      console.log('sleeping 100ms'); //  sleep to eliminate race condition  
-      setTimeout(function () {
-        console.log(`Browser Disconnected... Process Id: ${process}`);
-        borwserPID?.kill()
-      }, 100);
-    })
+  httpserv.on("close", async () => {
+    await browser.close()
   })
 })();
 

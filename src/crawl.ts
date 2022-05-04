@@ -1,20 +1,18 @@
 import { Browser } from "puppeteer";
 import { config_type, crawl } from "./types";
 import { writeFileSync, mkdirSync } from 'fs';
+import { ChromiumBrowser } from "playwright";
 
-export async function Crawl(browser: Browser, crawl_infos: crawl, config: config_type) {
+export async function Crawl(browser: ChromiumBrowser, crawl_infos: crawl, config: config_type) {
   const page = await browser.newPage();
   try {
     // log cron start
     console.log(`CAPTURE : ${crawl_infos.url} -> ${crawl_infos.file}`)
-    await page.setJavaScriptEnabled(true)
 
     let url = (crawl_infos.url.includes("http")) ? crawl_infos.url : `${config.target}${crawl_infos.url}`
     console.log(url)
-    await page.goto(url, {
-      waitUntil: ["domcontentloaded", "load", "networkidle2", "networkidle0"],
-    });
-    await page.waitForNetworkIdle()
+    await page.goto(url);
+    await page.waitForLoadState("networkidle")
     let ctn = await page.content()
 
     console.log(`END CAPTURE : ${crawl_infos.url} -> ${crawl_infos.file}`)

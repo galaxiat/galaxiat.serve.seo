@@ -27,6 +27,7 @@ const config: config_type = JSON.parse(readFileSync(config_location).toString())
   })
 
   const browser = await playwright.chromium.launch({ headless: true, args: config.args });
+  const context = await browser.newContext({ignoreHTTPSErrors : config.errors.https})
   let queue = new Stack()
 
   let httpserv = server.listen(config.port, () => {
@@ -39,7 +40,7 @@ const config: config_type = JSON.parse(readFileSync(config_location).toString())
         if ((curr_crawl_num < config.crawl_max_num)) {
           curr_crawl_num++
           for (const entry of queue.get(config.crawl_queue_num)) {
-            await Crawl(browser, entry, config)
+            await Crawl(context, entry, config)
           }
           curr_crawl_num--
         }

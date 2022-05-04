@@ -63,7 +63,10 @@ To set env use the `GALAXIAT_SERVE_ENV` var
   ],
   "crawl_cron" : "* * * * * *",
   "crawl_max_num" : 3,
-  "crawl_queue_num" : 10
+  "crawl_queue_num" : 10,
+  "errors" : {
+    "https" : false
+  }
 }
 ```
 ---

@@ -1,9 +1,8 @@
-import { Browser } from "puppeteer";
 import { config_type, crawl } from "./types";
 import { writeFileSync, mkdirSync } from 'fs';
-import { ChromiumBrowser } from "playwright";
+import { BrowserContext, ChromiumBrowser } from "playwright";
 
-export async function Crawl(browser: ChromiumBrowser, crawl_infos: crawl, config: config_type) {
+export async function Crawl(browser: BrowserContext, crawl_infos: crawl, config: config_type) {
   const page = await browser.newPage();
   try {
     // log cron start

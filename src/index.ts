@@ -17,6 +17,31 @@ const config_location = galaxiat_env ? `./.galaxiat.${galaxiat_env}.json` : `./.
 
 console.log(`loading config ${config_location}`);
 
+
+export class Stack {
+  list: crawl[]
+  constructor() {
+    this.list = []
+  }
+  public push(item: crawl): number {
+    console.log(item)
+    return this.list.indexOf(item) === -1 ? this.list.push(item) : this.list.length
+  }
+  public get(num: number): crawl[] {
+    let array: crawl[] = []
+    for (let i = 0; i < num; i++) {
+      let item = this.list.shift()
+      if (item) {
+        array.push(item)
+      }
+    }
+    return array;
+  }
+  public count(): number {
+    return this.list.length
+  }
+}
+
 const config: config_type = JSON.parse(readFileSync(config_location).toString());
 (async () => {
   const server = http.createServer((request, response) => {
@@ -61,27 +86,3 @@ const config: config_type = JSON.parse(readFileSync(config_location).toString())
     console.log(`Running at http://localhost:${config.port}`);
   });
 })();
-
-export class Stack {
-  list: crawl[]
-  constructor() {
-    this.list = []
-  }
-  public push(item: crawl): number {
-    console.log(item)
-    return this.list.indexOf(item) === -1 ? this.list.push(item) : this.list.length
-  }
-  public get(num: number): crawl[] {
-    let array: crawl[] = []
-    for (let i = 0; i < num; i++) {
-      let item = this.list.shift()
-      if (item) {
-        array.push(item)
-      }
-    }
-    return array;
-  }
-  public count(): number {
-    return this.list.length
-  }
-}

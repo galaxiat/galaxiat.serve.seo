@@ -4,7 +4,7 @@
   "type" : "remote",
   "args" : ["--no-sandbox", 
     "--disable-setuid-sandbox"],
-  "remote" : "wss://chrome.shared.svc.galaxiat.fr/playwright?token=MWkH6L4K3knkG3hvsaHrnzA5g6dtfucYk5nD9YVBRRh9ZtdPyDaE",
+  "remote" : "wss://chrome.shared.svc.galaxiat.fr/playwright?token=XXXXXX",
   "target" : "http://localhost:3000",
   "public" : "./public",
   "crawl" : [

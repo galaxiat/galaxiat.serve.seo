@@ -1,9 +1,12 @@
 import { config_type, crawl } from "./types";
 import { writeFileSync, mkdirSync } from 'fs';
 import { BrowserContext, ChromiumBrowser } from "playwright";
+import { GetBrowser } from "./getBrowser";
 
-export async function Crawl(browser: BrowserContext, crawl_infos: crawl, config: config_type) {
-  const page = await browser.newPage();
+export async function Crawl(crawl_infos: crawl, config: config_type) {
+  const browser = await GetBrowser(config)
+  const context = await browser.newContext()
+  const page = await context.newPage();
   try {
     // log cron start
     console.log(`CAPTURE : ${crawl_infos.url} -> ${crawl_infos.file}`)
@@ -27,6 +30,7 @@ export async function Crawl(browser: BrowserContext, crawl_infos: crawl, config:
   if (!page.isClosed()) {
     await page.close()
   }
-  console.log(page.isClosed())
-
+  if (!browser.isConnected) {
+    await browser.close()
+  }
 }

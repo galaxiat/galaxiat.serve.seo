@@ -1,10 +1,10 @@
 {
   "hostname" : "galaxiatapp.com",
   "port" : 3000,
-  "type" : "local",
+  "type" : "remote",
   "args" : ["--no-sandbox", 
     "--disable-setuid-sandbox"],
-  "remote" : "wss://chrome.shared.svc.galaxiat.fr/playwright?token=XXXXXX",
+  "remote" : "wss://chrome.shared.svc.galaxiat.fr/playwright?token=MWkH6L4K3knkG3hvsaHrnzA5g6dtfucYk5nD9YVBRRh9ZtdPyDaE",
   "target" : "http://localhost:3000",
   "public" : "./public",
   "crawl" : [

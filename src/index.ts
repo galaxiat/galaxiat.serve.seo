@@ -1,7 +1,5 @@
 #! /usr/bin/env node
 
-// imports
-
 import handler from 'serve-handler';
 import http from 'http';
 import { readFileSync } from 'fs';
@@ -12,6 +10,7 @@ import { NewCronRemote } from './cron_remote';
 import Cron from 'croner';
 import { Crawl } from './crawl';
 
+// 
 
 const galaxiat_env = process.env.GALAXIAT_SERVE_ENV
 const config_location = galaxiat_env ? `./.galaxiat.${galaxiat_env}.json` : `./.galaxiat.json`
@@ -26,17 +25,6 @@ const config: config_type = JSON.parse(readFileSync(config_location).toString())
     });
   })
 
-  let browser : playwright.Browser 
-
-  //browser = await playwright.chromium.launch({ headless: true, args: config.args });
-  if (config.type == "remote") {
-    browser = await playwright.chromium.connect(config.remote)
-  } else {
-    console.log("WARNING : you are using the local mode")
-    browser = await playwright.chromium.launch({ headless: true, args: config.args });
-  }
-  const context = await browser.newContext({ignoreHTTPSErrors : !config.errors.https})
-
 
   let queue = new Stack()
 
@@ -50,7 +38,7 @@ const config: config_type = JSON.parse(readFileSync(config_location).toString())
         if ((curr_crawl_num < config.crawl_max_num)) {
           curr_crawl_num++
           for (const entry of queue.get(config.crawl_queue_num)) {
-            await Crawl(context, entry, config)
+            await Crawl(entry, config)
           }
           curr_crawl_num--
         }
@@ -72,9 +60,6 @@ const config: config_type = JSON.parse(readFileSync(config_location).toString())
 
     console.log(`Running at http://localhost:${config.port}`);
   });
-  httpserv.on("close", async () => {
-    await browser.close()
-  })
 })();
 
 export class Stack {

@@ -5,7 +5,7 @@ import { GetBrowser } from "./getBrowser";
 
 export async function Crawl(crawl_infos: crawl, config: config_type) {
   const browser = await GetBrowser(config)
-  const context = await browser.newContext()
+  const context = await browser.newContext({ignoreHTTPSErrors : !config.errors.https}))
   const page = await context.newPage();
   try {
     // log cron start

@@ -40,12 +40,20 @@ npm install galaxiat.serve.seo
 
 To set env use the `GALAXIAT_SERVE_ENV` var
 
+`type` : `remote` | `local`
+- Remote will use the url provided on the `remote` key to connect a remote chrome instance.
+  - NB : include the `/playwright` at the end of the url
+  - For remote usage we recommend the use of Token see the docs of [browserless.io](https://docs.browserless.io/) for more infos
+- Local will spawn a chrome headless browser with args on the `args` key.
+
 ```json
 {
   "hostname" : "galaxiatapp.com",
   "port" : 3000,
+  "type" : "remote",
   "args" : ["--no-sandbox", 
     "--disable-setuid-sandbox"],
+  "remote" : "wss://chrome.shared.svc.galaxiat.fr/playwright?token=MWkH6L4K3knkG3hvsaHrnzA5g6dtfucYk5nD9YVBRRh9ZtdPyDaE",
   "target" : "http://localhost:3000",
   "public" : "./public",
   "crawl" : [
@@ -95,6 +103,11 @@ To set env use the `GALAXIAT_SERVE_ENV` var
 - `V3.X.X` - Advanced Multiple workload implementation
   - Multi-node deployment + Cluster cache -> better performance 
   - Cache is cluster wide instead of a local cache per node
+
+## We have added remote chrome support
+see [browserless.io](https://docs.browserless.io/) for more infos
+
+**Local mode is not recommended for production**
 
 ## Links
 

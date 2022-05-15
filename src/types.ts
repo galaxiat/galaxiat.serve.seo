@@ -17,6 +17,8 @@ export type crawl_urls_cron_remote_json = {
 }[]
 
 export type config_type = {
+  type : "remote" | "local",
+  remote : string,
   args : string[]
   hostname: string,
   port: number,

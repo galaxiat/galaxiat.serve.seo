@@ -26,8 +26,18 @@ const config: config_type = JSON.parse(readFileSync(config_location).toString())
     });
   })
 
-  const browser = await playwright.chromium.launch({ headless: true, args: config.args });
+  let browser : playwright.Browser 
+
+  //browser = await playwright.chromium.launch({ headless: true, args: config.args });
+  if (config.type == "remote") {
+    browser = await playwright.chromium.connect(config.remote)
+  } else {
+    console.log("WARNING : you are using the local mode")
+    browser = await playwright.chromium.launch({ headless: true, args: config.args });
+  }
   const context = await browser.newContext({ignoreHTTPSErrors : !config.errors.https})
+
+
   let queue = new Stack()
 
   let httpserv = server.listen(config.port, () => {
